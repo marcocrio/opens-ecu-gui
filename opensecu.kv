@@ -1,14 +1,76 @@
 
 <DataWindow>:
-    cols: 1
-    rows: 2
+
+    # Setting coloumn to 4
+    rows:2
     spacing: 10
     padding: 10
 
     canvas:
+        Color:
+            rgba: 0.1,0.1,0.1,1
+        Rectangle:
+            pos: self.pos
+            size: self.size
+
+
+##################################################
 
     GridLayout:
+        size_hint: 1,1
         cols: 3
-        spacing: 0, 10
-        padding: 0, 10
-        background: 1,1,1,1
+
+    #######################################
+        #Data
+        BoxLayout:
+            canvas:
+                Color:
+                    rgba: 0.1,0.1,0.1,1
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+            Label:
+                text: "I am a Label 3"
+
+    #####################################
+        #Tachometer RPMs
+        BoxLayout:
+            size_hint: 1.5,1
+            canvas:
+                Color:
+                    rgba: 0.1,0.1,0.1,1
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+            Label:
+                text: "I am a Label 2"
+
+        BoxLayout:
+            canvas:
+                Color:
+                    rgba: 0.1,0.1,0.1,1
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+            Label:
+                text: "I am a Label 3"
+
+
+
+###################################################################
+    # Console
+    BoxLayout:
+        size_hint: 1,0.2
+        canvas:
+            Color:
+                rgba: 0.1,0.1,0.1,1
+            Rectangle:
+                pos: self.pos
+                size: self.size
+
+        TextInput:
+            text: "ecu> "
+            background_color: 0.11,0.11,0.11,1
+            foreground_color: 1,1,1,1
+            boold: 1
+            padding: 15

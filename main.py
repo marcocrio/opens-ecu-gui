@@ -1,14 +1,10 @@
+import kivy
 from kivy.app import App
 from kivy.uix.gridlayout import GridLayout
-from kivy.uix.widget import Widget
-from kivy.properties import (
-    NumericProperty, ReferenceListProperty, ObjectProperty
-)
-from kivy.vector import Vector
-from kivy.graphics import *
 
 
-class DataWindow(Widget):
+
+class DataWindow(GridLayout):
     pass
 
 class OpensecuApp(App):
@@ -17,4 +13,5 @@ class OpensecuApp(App):
 
 
 if __name__ == '__main__':
-    OpensecuApp().run()
+    app = OpensecuApp()
+    app.run()
