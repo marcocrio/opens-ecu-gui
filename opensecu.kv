@@ -1,7 +1,16 @@
 
+#:import math math
+
+[ClockNumber@Label]:
+    text: str(ctx.i)
+    pos_hint: {"center_x": 0.5+0.42*math.sin(math.pi/8*(ctx.i-7)), "center_y": 0.5+0.42*math.cos(math.pi/8*(ctx.i-7))}
+    font_size: self.height/22
+
+
+
 <DataWindow>:
 
-    # Setting coloumn to 4
+    # Main windows
     rows:2
     spacing: 10
     padding: 10
@@ -14,13 +23,13 @@
             size: self.size
 
 
-##################################################
+##########################################################
 
     GridLayout:
         size_hint: 1,1
         cols: 3
 
-    #######################################
+#-------------------------- Data -----------------------------#
         #Data
         BoxLayout:
             canvas:
@@ -32,18 +41,73 @@
             Label:
                 text: "I am a Label 3"
 
-    #####################################
-        #Tachometer RPMs
+
+
+#---------------------- Tachometer RPM ------------------------#
         BoxLayout:
             size_hint: 1.5,1
-            canvas:
+
+            canvas.before:
                 Color:
-                    rgba: 0.1,0.1,0.1,1
+                    rgba: 0.15,0.15,0.15,1
                 Rectangle:
                     pos: self.pos
                     size: self.size
-            Label:
-                text: "I am a Label 2"
+
+            AnchorLayout:
+                anchor_x: 'center'
+                anchor_y: 'center'
+
+                FloatLayout:
+                    size_hint:None,None
+                    size: (min(self.parent.size) * 0.95 ) , (min(self.parent.size) * 0.95 )
+                    ClockNumber:
+                        i: 1
+                    ClockNumber:
+                        i: 2
+                    ClockNumber:
+                        i: 3
+                    ClockNumber:
+                        i: 4
+                    ClockNumber:
+                        i: 5
+                    ClockNumber:
+                        i: 6
+                    ClockNumber:
+                        i: 7
+                    ClockNumber:
+                        i: 8
+
+                AnchorLayout:
+                    anchor_x: 'center'
+                    anchor_y: 'center'
+                    canvas.before:
+                        Color:
+                            rgba: 1,1,1,1
+                        Line:
+                            width: 2
+                            circle:
+                                (self.center_x, self.center_y, min(self.width, self.height)
+                                / 2, 22.5, -135)
+
+                    size_hint:None,None
+                    size: (min(self.parent.size) * 0.68 ) , (min(self.parent.size) * 0.68 )
+
+                AnchorLayout:
+                    anchor_x: 'center'
+                    anchor_y: 'center'
+                    canvas.before:
+                        Color:
+                            rgba: 0.15,0.5,0.5,0.5
+                        Line:
+                            width: 2.
+                            ellipse: (self.x, self.y, min(self.size),min(self.size))
+                    size_hint:None,None
+                    size: (min(self.parent.size) * 0.5 ) , (min(self.parent.size) * 0.5 )
+
+
+
+#------------------------ Volumetric Efficiency Table -------------------------#
 
         BoxLayout:
             canvas:
@@ -58,9 +122,11 @@
 
 
 ###################################################################
-    # Console
+
+
+#------------------------ Console -------------------------#
     BoxLayout:
-        size_hint: 1,0.2
+        size_hint: 1,0.3
         canvas:
             Color:
                 rgba: 0.1,0.1,0.1,1
