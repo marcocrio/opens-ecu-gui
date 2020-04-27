@@ -1,14 +1,20 @@
 
 #:import math math
 
-[ClockNumber@Label]:
+[GaugeNumber@Label]:
     text: str(ctx.i)
     pos_hint: {"center_x": 0.5+0.42*math.sin(math.pi/8*(ctx.i-7)), "center_y": 0.5+0.42*math.cos(math.pi/8*(ctx.i-7))}
     font_size: self.height/24
 
 
 
+
+
 <DataWindow>:
+    id: opensecu
+    display: cmd
+
+    level: -135
 
     # Main windows
     rows:2
@@ -58,27 +64,27 @@
                 anchor_x: 'center'
                 anchor_y: 'center'
 
-                FloatLayout:
+                FloatLayout: #gauges numers
                     size_hint:None,None
                     size: (min(self.parent.size) * 0.95 ) , (min(self.parent.size) * 0.95 )
-                    ClockNumber:
+                    GaugeNumber:
                         i: 1
-                    ClockNumber:
+                    GaugeNumber:
                         i: 2
-                    ClockNumber:
+                    GaugeNumber:
                         i: 3
-                    ClockNumber:
+                    GaugeNumber:
                         i: 4
-                    ClockNumber:
+                    GaugeNumber:
                         i: 5
-                    ClockNumber:
+                    GaugeNumber:
                         i: 6
-                    ClockNumber:
+                    GaugeNumber:
                         i: 7
-                    ClockNumber:
+                    GaugeNumber:
                         i: 8
 
-                AnchorLayout:
+                AnchorLayout: #gauges dots
                     anchor_x: 'center'
                     anchor_y: 'center'
                     canvas.before:
@@ -95,9 +101,11 @@
                         size: self.texture_size
 
 
-                AnchorLayout:
+                AnchorLayout: #gauges level rail
+
                     anchor_x: 'center'
                     anchor_y: 'center'
+
                     canvas.before:
                         Color:
                             rgba: 0.1,0.1,0.1,1
@@ -106,12 +114,14 @@
                             circle:
                                 (self.center_x, self.center_y, min(self.width, self.height)
                                 / 2, -135, 22.5, 500)
-                            cap: 'square'
+                            cap: 'none'
+
                     size_hint:None,None
                     size: (min(self.parent.size) * 0.5 ) , (min(self.parent.size) * 0.5 )
 
 
-                AnchorLayout:
+                AnchorLayout: #gauges levels
+                    id: gauge
                     anchor_x: 'center'
                     anchor_y: 'center'
                     canvas.before:
@@ -121,13 +131,29 @@
                             width: min(self.size)/15
                             circle:
                                 (self.center_x, self.center_y, min(self.width, self.height)
-                                / 2, -135, -135, 500)
-                            cap: 'square'
-
-
+                                / 2, -135, root.level , 50)
+                            cap: 'none'
 
                     size_hint:None,None
                     size: (min(self.parent.size) * 0.5 ) , (min(self.parent.size) * 0.5 )
+
+
+                AnchorLayout: #blue line in gauge
+                    id: gauge
+                    anchor_x: 'center'
+                    anchor_y: 'center'
+                    canvas.before:
+                        Color:
+                            rgba: 0,0.93,1,1
+                        Line:
+                            width: min(self.width, self.height) / 100
+                            circle:
+                                (self.center_x, self.center_y, min(self.width, self.height)
+                                / 2, 0, 360 , 50)
+                            cap: 'none'
+
+                    size_hint:None,None
+                    size: (min(self.parent.size) * 0.35 ) , (min(self.parent.size) * 0.35 )
 
 
 
@@ -143,7 +169,7 @@
                     pos: self.pos
                     size: self.size
             Label:
-                text: "I am a Label 3"
+                text: "I'm label 3"
 
 
 
@@ -161,8 +187,13 @@
                 size: self.size
 
         TextInput:
+            id: cmd
             text: "ecu> "
             background_color: 0.11,0.11,0.11,1
             foreground_color: 1,1,1,1
             boold: 1
             padding: 15
+            multiline: False
+            on_text: opensecu.bashlook(self.text, self.cursor)
+            on_text_validate: opensecu.on_enter(self.text)
+            # on_key_down:opensecu.on_enter(self.text)
