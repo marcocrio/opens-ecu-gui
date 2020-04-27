@@ -3,11 +3,8 @@
 
 [GaugeNumber@Label]:
     text: str(ctx.i)
-    pos_hint: {"center_x": 0.5+0.42*math.sin(math.pi/8*(ctx.i-7)), "center_y": 0.5+0.42*math.cos(math.pi/8*(ctx.i-7))}
+    pos_hint: {"center_x": 0.5+0.42*math.sin(math.pi/8*(ctx.i-6)), "center_y": 0.5+0.42*math.cos(math.pi/8*(ctx.i-6))}
     font_size: self.height/24
-
-
-
 
 
 <DataWindow>:
@@ -40,12 +37,12 @@
         BoxLayout:
             canvas:
                 Color:
-                    rgba: 0.11,0.11,0.11,1
+                    rgba: 0.12,0.1195,0.122,1
                 Rectangle:
                     pos: self.pos
                     size: self.size
             Label:
-                text: "I am a Label 3"
+                text: "I'm label 1"
 
 
 
@@ -55,7 +52,7 @@
 
             canvas.before:
                 Color:
-                    rgba: 0.11,0.11,0.11,1
+                    rgba: 0.12,0.1195,0.122,1
                 Rectangle:
                     pos: self.pos
                     size: self.size
@@ -67,6 +64,8 @@
                 FloatLayout: #gauges numers
                     size_hint:None,None
                     size: (min(self.parent.size) * 0.95 ) , (min(self.parent.size) * 0.95 )
+                    GaugeNumber:
+                        i: 0
                     GaugeNumber:
                         i: 1
                     GaugeNumber:
@@ -87,15 +86,8 @@
                 AnchorLayout: #gauges dots
                     anchor_x: 'center'
                     anchor_y: 'center'
-                    canvas.before:
-                        Color:
-                            rgba: 1,1,1,1
-                            Rectangle:
-                                pos:self.pos
-                                size:self.size
                     size_hint:None,None
                     size: (min(self.parent.size) * 0.68 ) , (min(self.parent.size) * 0.68 )
-
                     Image:
                         source: "resources/gauge.png"
                         size: self.texture_size
@@ -113,7 +105,7 @@
                             width: min(self.size)/15
                             circle:
                                 (self.center_x, self.center_y, min(self.width, self.height)
-                                / 2, -135, 22.5, 500)
+                                / 2, -135.5, 45, 500)
                             cap: 'none'
 
                     size_hint:None,None
@@ -126,7 +118,7 @@
                     anchor_y: 'center'
                     canvas.before:
                         Color:
-                            rgba: 0,0.93,1,1
+                            rgba: 0,0.93,1,0.5
                         Line:
                             width: min(self.size)/15
                             circle:
@@ -144,7 +136,7 @@
                     anchor_y: 'center'
                     canvas.before:
                         Color:
-                            rgba: 0,0.93,1,1
+                            rgba: 0,0.93,1,0.5
                         Line:
                             width: min(self.width, self.height) / 100
                             circle:
@@ -153,10 +145,54 @@
                             cap: 'none'
 
                     size_hint:None,None
-                    size: (min(self.parent.size) * 0.35 ) , (min(self.parent.size) * 0.35 )
+                    size: (min(self.parent.size) * 0.38 ) , (min(self.parent.size) * 0.38 )
 
 
 
+                BoxLayout: #gauges numers
+                    size_hint:None,None
+                    size: (min(self.parent.size) * 0.38 ) , ((min(self.parent.size) * 0.38) )
+                    Label:
+                        text: str( int( ( (root.level) + 135 ) * 44.44444 ) )
+                        pos_hint: {"center_x": 0.5, "center_y": 0.65}
+                        font_size: self.height / 6
+
+                BoxLayout:
+                    size_hint:None,None
+                    size: (min(self.parent.size) * 0.38 ) , ((min(self.parent.size) * 0.38) )
+                    Label:
+                        text: "RMP"
+                        pos_hint: {"center_x": 0.5, "center_y": 0.35}
+                        font_size: self.height / 12
+
+
+                BoxLayout:
+                    size_hint:None,None
+                    size: (min(self.parent.size) * 0.38 ) , ((min(self.parent.size) * 0.38) )
+                    Label:
+                        text: "x1000"
+                        pos_hint: {"center_x": 0.5, "center_y": 0.25}
+                        font_size: self.height / 10
+
+
+
+                FloatLayout: #gauges dots
+                    anchor_x: 'center'
+                    anchor_y: 'center'
+                    size_hint:None,None
+                    size: (min(self.parent.size) * 0.60 ) , (min(self.parent.size) * 0.60 )
+
+                    Image:
+                        source: "resources/needle.png"
+                        size: self.texture_size
+                        pos_hint: {'center_x': .5, 'center_y': .5}
+                        canvas.before:
+                            PushMatrix
+                            Rotate:
+                                angle: (root.level)* (-1)
+                                origin: self.center
+                        canvas.after:
+                            PopMatrix
 
 
 #------------------------ Volumetric Efficiency Table -------------------------#
@@ -164,7 +200,7 @@
         BoxLayout:
             canvas:
                 Color:
-                    rgba: 0.11,0.11,0.11,1
+                    rgba: 0.12,0.1195,0.122,1
                 Rectangle:
                     pos: self.pos
                     size: self.size
@@ -181,7 +217,7 @@
         size_hint: 1,0.3
         canvas:
             Color:
-                rgba: 0.11,0.11,0.11,1
+                rgba: 0.12,0.1195,0.122,1
             Rectangle:
                 pos: self.pos
                 size: self.size
@@ -189,7 +225,7 @@
         TextInput:
             id: cmd
             text: "ecu> "
-            background_color: 0.11,0.11,0.11,1
+            background_color: 0.12,0.1195,0.122,1
             foreground_color: 1,1,1,1
             boold: 1
             padding: 15

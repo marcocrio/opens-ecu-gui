@@ -14,7 +14,6 @@ from functools import partial
 
 class DataWindow(GridLayout):
 
-
     def gaugeChange(self, rpm):
         if rpm:
             try:
@@ -25,9 +24,9 @@ class DataWindow(GridLayout):
     def on_enter(self, value):
         print(value[5:] )
         self.display.text = "ecu> "
-        if float(value[5:]) > 22.5:
+        if float(value[5:]) > 45:
             #self.level = 22.5
-            anim = Animation(level = 22.5)
+            anim = Animation(level = 45)
         elif float(value[5:]) < -135:
             #self.level = -135
             anim = Animation(level = -135)
