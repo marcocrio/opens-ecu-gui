@@ -32,21 +32,21 @@ class DataWindow(GridLayout):
 
 
     def rpmupdate(self,dt):
-        print(self.level)
+        # print(self.level)
 
-        if (float(readings[0]) > 7999):
-            #self.level = 22.5
-            anim = Animation(level = 45)
-            self.rpm = 8000
-        elif float(readings[0]) < 1:
-            #self.level = -135
-            anim = Animation(level = -135)
-            self.rpm = 0
-        else:
-            anim = Animation(level = rpm_conversion(float(readings[0])) )
-            self.rpm = readings[0]
+        # if (float(readings[0]) > 7999):
+        #     #self.level = 22.5
+        #     anim = Animation(level = 45)
+        #     self.rpm = 8000
+        # elif float(readings[0]) < 1:
+        #     #self.level = -135
+        #     anim = Animation(level = -135)
+        #     self.rpm = 0
+        # else:
+        #     anim = Animation(level = rpm_conversion(float(readings[0])) )
+        #     self.rpm = readings[0]
 
-        anim.start(self)
+        # anim.start(self)
 
     def on_enter(self, value):
         print(value[5:] )
