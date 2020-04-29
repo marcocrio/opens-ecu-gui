@@ -12,6 +12,7 @@
     display: cmd
 
     level: -135
+    rpm: 0
 
     # Main windows
     rows:2
@@ -149,15 +150,15 @@
 
 
 
-                BoxLayout: #gauges numers
+                BoxLayout: #gauge real time RPMS
                     size_hint:None,None
                     size: (min(self.parent.size) * 0.38 ) , ((min(self.parent.size) * 0.38) )
                     Label:
-                        text: str( int( ( (root.level) + 135 ) * 44.44444 ) )
+                        text: str(int(root.rpm))
                         pos_hint: {"center_x": 0.5, "center_y": 0.65}
                         font_size: self.height / 6
 
-                BoxLayout:
+                BoxLayout:#gauges RPM note
                     size_hint:None,None
                     size: (min(self.parent.size) * 0.38 ) , ((min(self.parent.size) * 0.38) )
                     Label:
@@ -166,7 +167,7 @@
                         font_size: self.height / 12
 
 
-                BoxLayout:
+                BoxLayout:#gauges x1000
                     size_hint:None,None
                     size: (min(self.parent.size) * 0.38 ) , ((min(self.parent.size) * 0.38) )
                     Label:
@@ -176,7 +177,7 @@
 
 
 
-                FloatLayout: #gauges dots
+                FloatLayout: #gauges needle
                     anchor_x: 'center'
                     anchor_y: 'center'
                     size_hint:None,None

@@ -6,7 +6,7 @@
         {
             "label": "run",
             "type": "shell",
-            "command": "python main.py",
+            "command": "& C:/ProgramData/Anaconda3/python.exe \"c:/Users/maram/Desktop/UTEP/Senior' '2/gui/opens-ecu-gui/main.py\"",
             "problemMatcher": [],
             "group": {
                 "kind": "build",
