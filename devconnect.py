@@ -10,42 +10,43 @@ import os
 
 
 # set global variable flag
-exit_flag = True
+exit_flag = False
 com_semaphore = False
-i = 0
 readings = [0] *6
-def list_ports(serialPort):
+def read_port(serialPort):
+    i = 0
     global exit_flag
-    while exit_flag==True:
+    while exit_flag==False:
         # Wait until there is data waiting in the serial buffer
-        if(serialPort.in_waiting > 0):
+        try:
+            if(serialPort.in_waiting > 0):
 
-            # Read data out of the buffer until a carraige return / new line is found
-            serialString = serialPort.readline()
-
-
-            if (serialString.decode('UTF-8') == ">eof\r\n"):
-                os.system("clear")
-                com_semaphore = False
-                i=0
-            elif (serialString.decode('UTF-8') == ">txf\r\n"):
-                print("Data Recieved:")
-                com_semaphore = True
-            else:
-                # Print the contents of the serial data
-                readings[i]=serialString.decode('UTF-8')[4:-2]
-                i += 1
-                print(serialString.decode('UTF-8')[0:-1])
+                # Read data out of the buffer until a carraige return / new line is found
+                serialString = serialPort.readline()
 
 
+                if (serialString.decode('UTF-8') == ">eof\r\n"):
+                    os.system("clear")
+                    com_semaphore = False
+                    i=0
+                elif (serialString.decode('UTF-8') == ">txf\r\n"):
+                    print("Data Recieved:")
+                    com_semaphore = True
+                else:
+                    # Print the contents of the serial data
+                    readings[i]=serialString.decode('UTF-8')[4:-2]
+                    i += 1
+                    print(serialString.decode('UTF-8')[0:-1])
+        except:
+            print("Connection Lost")
+            return
 
-def get_input():
+
+# forces readings thread to return
+def exit_app():
     global exit_flag
-    keystrk=input('Press a key \n')
-    # thread doesn't continue until key is pressed
-    print('You pressed: ', keystrk)
-    exit_flag=False
-    print('flag is now:', exit_flag)
+    exit_flag=True
+    print('Exiting now', exit_flag)
 
 
 
@@ -90,21 +91,17 @@ def connect(port):
         return serialPort
     except:
         print("No port was found")
-        pass
-
-
-
-
+        return serialPort
 
 
 
 
 if __name__ == '__main__':
-    ports = serial_ports()
-    print(ports)
-    serialPort = connect(ports[0])
+    # ports = serial_ports()
+    # print(ports)
+    serialPort = connect('COM3')
 
-    n=threading.Thread(target=list_ports, args=(serialPort,))
-    i=threading.Thread(target=get_input)
+    n=threading.Thread(target=read_port, args=(serialPort,))
+    # i=threading.Thread(target=get_input)
     n.start()
-    i.start()
+    # i.start()

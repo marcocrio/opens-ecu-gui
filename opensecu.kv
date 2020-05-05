@@ -6,12 +6,45 @@
     pos_hint: {"center_x": 0.5+0.42*math.sin(math.pi/8*(ctx.i-6)), "center_y": 0.5+0.42*math.cos(math.pi/8*(ctx.i-6))}
     font_size: self.height/24
 
+<OpensecuGauge>:
+    anchor_x: 'center'
+    anchor_y: 'center'
+    size_hint:None,None
 
-<DataWindow>:
+
+<OpensecuReadings>:
+    # pos_hint: {'center_x': 0.2, 'center_y': 1}
+    size_hint:(0.5,0.1)
+    text_size: root.width, root.height
+    font_size: self.height/2
+    halign: 'left'
+    valign: 'middle'
+    markup: True
+    # canvas.before:
+    #     Color:
+    #         rgba: 0.12,0,0.122,0.5
+    #     Rectangle:
+    #         pos: self.pos
+    #         size: self.size
+
+
+<OpensecuNeedle>:
+    source: "resources/needle.png"
+    size: self.texture_size
+    pos_hint: {'center_x': .5, 'center_y': .5}
+    canvas.after:
+        PopMatrix
+
+
+<OpensecuWindow>:
     id: opensecu
     display: cmd
+    needle: needle
+    gauge: gauge
 
-    level: -135
+
+    gauge_level: -135
+    needle_level: -135
     rpm: 0
 
     # Main windows
@@ -36,14 +69,31 @@
 #-------------------------- Data -----------------------------#
         #Data
         BoxLayout:
-            canvas:
+            canvas.before:
                 Color:
                     rgba: 0.12,0.1195,0.122,1
                 Rectangle:
                     pos: self.pos
                     size: self.size
-            Label:
-                text: "I'm label 1"
+
+            BoxLayout:
+                orientation: 'vertical'
+                padding: self.width* 0.1, self.height* 0.15
+                size_hint: 1,0.6
+                pos_hint:{'center_x': 0, 'center_y': 0.5}
+                OpensecuReadings:
+                    text: "Readigns"
+                    font_size: self.height/1.5
+                OpensecuReadings:
+                    text: "IMP: " + root.imp
+                OpensecuReadings:
+                    text: "Air mass: " + root.amass
+                OpensecuReadings:
+                    text: "fuel mass: " + root.fmass
+                OpensecuReadings:
+                    text: "Frequency " + root.freq
+
+
 
 
 
@@ -94,10 +144,7 @@
                         size: self.texture_size
 
 
-                AnchorLayout: #gauges level rail
-
-                    anchor_x: 'center'
-                    anchor_y: 'center'
+                OpensecuGauge: #gauges level rail
 
                     canvas.before:
                         Color:
@@ -109,14 +156,11 @@
                                 / 2, -135.5, 45, 500)
                             cap: 'none'
 
-                    size_hint:None,None
                     size: (min(self.parent.size) * 0.5 ) , (min(self.parent.size) * 0.5 )
 
 
-                AnchorLayout: #gauges levels
+                OpensecuGauge: #gauges levels
                     id: gauge
-                    anchor_x: 'center'
-                    anchor_y: 'center'
                     canvas.before:
                         Color:
                             rgba: 0,0.93,1,0.5
@@ -124,15 +168,13 @@
                             width: min(self.size)/15
                             circle:
                                 (self.center_x, self.center_y, min(self.width, self.height)
-                                / 2, -135, root.level , 50)
+                                / 2, -135, self.gauge_level , 50)
                             cap: 'none'
 
-                    size_hint:None,None
                     size: (min(self.parent.size) * 0.5 ) , (min(self.parent.size) * 0.5 )
 
 
                 AnchorLayout: #blue line in gauge
-                    id: gauge
                     anchor_x: 'center'
                     anchor_y: 'center'
                     canvas.before:
@@ -158,6 +200,7 @@
                         pos_hint: {"center_x": 0.5, "center_y": 0.65}
                         font_size: self.height / 6
 
+
                 BoxLayout:#gauges RPM note
                     size_hint:None,None
                     size: (min(self.parent.size) * 0.38 ) , ((min(self.parent.size) * 0.38) )
@@ -182,18 +225,14 @@
                     anchor_y: 'center'
                     size_hint:None,None
                     size: (min(self.parent.size) * 0.60 ) , (min(self.parent.size) * 0.60 )
-
-                    Image:
-                        source: "resources/needle.png"
-                        size: self.texture_size
-                        pos_hint: {'center_x': .5, 'center_y': .5}
+                    OpensecuNeedle:
+                        id: needle
                         canvas.before:
                             PushMatrix
                             Rotate:
-                                angle: (root.level)* (-1)
+                                angle: (self.needle_level)* (-1)
                                 origin: self.center
-                        canvas.after:
-                            PopMatrix
+
 
 
 #------------------------ Volumetric Efficiency Table -------------------------#
