@@ -26,20 +26,38 @@ def read_port(serialPort):
 
 
                 if (serialString.decode('UTF-8') == ">eof\r\n"):
-                    os.system("clear")
+                    # os.system("clear")
                     com_semaphore = False
                     i=0
                 elif (serialString.decode('UTF-8') == ">txf\r\n"):
-                    print("Data Recieved:")
+                    # print("Data Recieved:")
                     com_semaphore = True
                 else:
                     # Print the contents of the serial data
-                    readings[i]=serialString.decode('UTF-8')[4:-2]
+                    if(i==5):
+                        readings[i]= round(float(serialString.decode('UTF-8')[4:-2])/1000,2)
+                    else:
+                        readings[i]= round(float(serialString.decode('UTF-8')[4:-2]),2)
+                    # print(readings[i])
                     i += 1
-                    print(serialString.decode('UTF-8')[0:-1])
+
         except:
             print("Connection Lost")
             return
+
+
+
+def connect(port):
+    try:
+        serialPort = serial.Serial(port = port, baudrate=115200,
+                                bytesize=8, timeout=2, stopbits=serial.STOPBITS_ONE)
+        print("Connection Succesful")
+        return serialPort
+    except:
+        print("No port was found")
+        return serialPort
+
+
 
 
 # forces readings thread to return
@@ -48,6 +66,17 @@ def exit_app():
     exit_flag=True
     print('Exiting now', exit_flag)
 
+
+
+
+
+def test_exit():
+    global exit_flag
+    keystrk=input('Press a key \n')
+    # thread doesn't continue until key is pressed
+    print('You pressed: ', keystrk)
+    exit_flag=True
+    print('flag is now:', exit_flag)
 
 
 
@@ -83,15 +112,6 @@ def serial_ports():
 
 
 
-def connect(port):
-    try:
-        serialPort = serial.Serial(port = port, baudrate=115200,
-                                bytesize=8, timeout=2, stopbits=serial.STOPBITS_ONE)
-        print("Connection Succesful")
-        return serialPort
-    except:
-        print("No port was found")
-        return serialPort
 
 
 
@@ -102,6 +122,6 @@ if __name__ == '__main__':
     serialPort = connect('COM3')
 
     n=threading.Thread(target=read_port, args=(serialPort,))
-    # i=threading.Thread(target=get_input)
+    i=threading.Thread(target=test_exit)
     n.start()
-    # i.start()
+    i.start()

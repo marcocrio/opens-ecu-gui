@@ -14,9 +14,9 @@
 
 <OpensecuReadings>:
     # pos_hint: {'center_x': 0.2, 'center_y': 1}
-    size_hint:(0.5,0.1)
-    text_size: root.width, root.height
-    font_size: self.height/2
+    size_hint:(1,0.1)
+    text_size: root.width - (root.width * 0.3), root.height
+    font_size: self.height/2.5
     halign: 'left'
     valign: 'middle'
     markup: True
@@ -26,6 +26,17 @@
     #     Rectangle:
     #         pos: self.pos
     #         size: self.size
+
+
+<OpensecuVE>:
+    markup:True
+    font_size: self.width/2.5
+    canvas.before:
+        Color:
+            rgba: 0.12,0.1195,0.122,1
+        Rectangle:
+            pos: self.pos
+            size: self.size
 
 
 <OpensecuNeedle>:
@@ -41,6 +52,8 @@
     display: cmd
     needle: needle
     gauge: gauge
+
+    aa:aa
 
 
     gauge_level: -135
@@ -65,10 +78,10 @@
     GridLayout:
         size_hint: 1,1
         cols: 3
-
 #-------------------------- Data -----------------------------#
         #Data
         BoxLayout:
+            size_hint: 0.25,1
             canvas.before:
                 Color:
                     rgba: 0.12,0.1195,0.122,1
@@ -78,20 +91,26 @@
 
             BoxLayout:
                 orientation: 'vertical'
-                padding: self.width* 0.1, self.height* 0.15
-                size_hint: 1,0.6
+                padding: self.width* 0.05, self.height* 0.15
+                size_hint: 1,0.7
                 pos_hint:{'center_x': 0, 'center_y': 0.5}
+                # canvas.before:
+                #     Color:
+                #         rgba: 0.2,0.25,0.122,0.5
+                #     Rectangle:
+                #         pos: self.pos
+                #         size: self.size
                 OpensecuReadings:
-                    text: "Readigns"
+                    text: "[b][color=#0c838c]Readings[/color][/b]"
                     font_size: self.height/1.5
                 OpensecuReadings:
-                    text: "IMP: " + root.imp
+                    text: "[b]IMP: [/b][color=#429ba2]" + root.imp + " hPa[/color]"
                 OpensecuReadings:
-                    text: "Air mass: " + root.amass
+                    text: "[b]Air mass: [/b][color=#429ba2]" + root.amass + " g[/color]"
                 OpensecuReadings:
-                    text: "fuel mass: " + root.fmass
+                    text: "[b]Fuel mass: [/b][color=#429ba2]" + root.fmass + " g[/color]"
                 OpensecuReadings:
-                    text: "Frequency " + root.freq
+                    text: "[b]Frequency: [/b][color=#429ba2] " + root.freq + " kHz[/color]"
 
 
 
@@ -99,7 +118,7 @@
 
 #---------------------- Tachometer RPM ------------------------#
         BoxLayout:
-            size_hint: 1.5,1
+            size_hint: 0.35,1
 
             canvas.before:
                 Color:
@@ -238,14 +257,542 @@
 #------------------------ Volumetric Efficiency Table -------------------------#
 
         BoxLayout:
-            canvas:
+            size_hint: 0.4,1
+            padding: 0,0,10,0
+            canvas.before:
                 Color:
                     rgba: 0.12,0.1195,0.122,1
                 Rectangle:
                     pos: self.pos
                     size: self.size
-            Label:
-                text: "I'm label 3"
+            GridLayout:
+                pos_hint: {"center_x": 0, "center_y": 0.5}
+                size_hint: 1,0.9
+                rows:2
+                canvas.before:
+                    Color:
+                        rgba: 0.1,0.1,0.1,1
+                    Rectangle:
+                        pos: self.pos
+                        size: self.size
+
+                Label:
+                    markup: True
+                    text: "[b][color=#429ba2]RPMs: (x1000)[/color][/b]"
+                    size_hint: None,None
+                    size: (   self.parent.width, (root.width) * 0.025 )
+                    font_size: self.height/2
+                    canvas.before:
+                        Color:
+                            rgba: 0.12,0.1195,0.122,1
+                        Rectangle:
+                            pos: self.pos
+                            size: self.size
+                GridLayout:
+                    cols:2
+                    spacing:2
+                    Label:
+                        markup: True
+                        font_size: self.width/2
+                        text: "[b][color=#429ba2]Pressure: (hPa)[/color][/b]"
+                        size_hint:None,None
+                        size: ((root.width) * 0.025  , self.parent.height )
+                        canvas.before:
+                            Color:
+                                rgba: 0.12,0.1195,0.122,1
+                            Rectangle:
+                                pos: self.pos
+                                size: self.size
+                            PushMatrix
+                            Rotate:
+                                angle: 90
+                                origin: self.center
+                        canvas.after:
+                            PopMatrix
+                    GridLayout:
+                        id:ve
+                        cols:13
+                        rows:17
+                        spacing: 2
+                        OpensecuVE:
+
+                        OpensecuVE:
+                            text:"1.2"
+                        OpensecuVE:
+                            text:"1.4"
+                        OpensecuVE:
+                            text:"1.65"
+                        OpensecuVE:
+                            text:"2"
+                        OpensecuVE:
+                            text:"2.5"
+                        OpensecuVE:
+                            text:"3"
+                        OpensecuVE:
+                            text:"3.5"
+                        OpensecuVE:
+                            text:"4"
+                        OpensecuVE:
+                            text:"5"
+                        OpensecuVE:
+                            text:"6"
+                        OpensecuVE:
+                            text:"7"
+                        OpensecuVE:
+                            text:"8"
+
+
+
+                        OpensecuVE:
+                            text:"300"
+                        OpensecuVE:
+                            text:"0.46"
+                        OpensecuVE:
+                            text:"0.48"
+                        OpensecuVE:
+                            text:"0.50"
+                        OpensecuVE:
+                            text:"0.52"
+                        OpensecuVE:
+                            text:"0.54"
+                        OpensecuVE:
+                            text:"0.56"
+                        OpensecuVE:
+                            text:"0.59"
+                        OpensecuVE:
+                            text:"0.60"
+                        OpensecuVE:
+                            text:"0.62"
+                        OpensecuVE:
+                            text:"0.65"
+                        OpensecuVE:
+                            text:"0.64"
+                        OpensecuVE:
+                            text:"0.65"
+
+
+                        OpensecuVE:
+                            text:"350"
+                        OpensecuVE:
+                            text:"0.51"
+                        OpensecuVE:
+                            text:"0.53"
+                        OpensecuVE:
+                            text:"0.55"
+                        OpensecuVE:
+                            text:"0.57"
+                        OpensecuVE:
+                            text:"0.59"
+                        OpensecuVE:
+                            text:"0.60"
+                        OpensecuVE:
+                            text:"0.62"
+                        OpensecuVE:
+                            text:"0.64"
+                        OpensecuVE:
+                            text:"0.67"
+                        OpensecuVE:
+                            text:"0.68"
+                        OpensecuVE:
+                            text:"0.68"
+                        OpensecuVE:
+                            text:"0.68"
+
+
+                        OpensecuVE:
+                            text:"400"
+                        OpensecuVE:
+                            text:"0.54"
+                        OpensecuVE:
+                            text:"0.56"
+                        OpensecuVE:
+                            text:"0.58"
+                        OpensecuVE:
+                            text:"0.60"
+                        OpensecuVE:
+                            text:"0.62"
+                        OpensecuVE:
+                            text:"0.64"
+                        OpensecuVE:
+                            text:"0.67"
+                        OpensecuVE:
+                            text:"0.69"
+                        OpensecuVE:
+                            text:"0.71"
+                        OpensecuVE:
+                            text:"0.72"
+                        OpensecuVE:
+                            text:"0.72"
+                        OpensecuVE:
+                            text:"0.73"
+
+
+                        OpensecuVE:
+                            text:"430"
+                        OpensecuVE:
+                            text:"0.58"
+                        OpensecuVE:
+                            text:"0.59"
+                        OpensecuVE:
+                            text:"0.61"
+                        OpensecuVE:
+                            text:"0.63"
+                        OpensecuVE:
+                            text:"0.65"
+                        OpensecuVE:
+                            text:"0.67"
+                        OpensecuVE:
+                            text:"0.68"
+                        OpensecuVE:
+                            text:"0.70"
+                        OpensecuVE:
+                            text:"0.73"
+                        OpensecuVE:
+                            text:"0.74"
+                        OpensecuVE:
+                            text:"0.74"
+                        OpensecuVE:
+                            text:"0.74"
+
+
+                        OpensecuVE:
+                            text:"460"
+                        OpensecuVE:
+                            text:"0.60"
+                        OpensecuVE:
+                            text:"0.60"
+                        OpensecuVE:
+                            text:"0.63"
+                        OpensecuVE:
+                            text:"0.65"
+                        OpensecuVE:
+                            text:"0.67"
+                        OpensecuVE:
+                            text:"0.69"
+                        OpensecuVE:
+                            text:"0.70"
+                        OpensecuVE:
+                            text:"0.73"
+                        OpensecuVE:
+                            text:"0.75"
+                        OpensecuVE:
+                            text:"0.77"
+                        OpensecuVE:
+                            text:"0.77"
+                        OpensecuVE:
+                            text:"0.77"
+
+
+                        OpensecuVE:
+                            text:"500"
+                        OpensecuVE:
+                            text:"0.61"
+                        OpensecuVE:
+                            text:"0.62"
+                        OpensecuVE:
+                            text:"0.64"
+                        OpensecuVE:
+                            text:"0.66"
+                        OpensecuVE:
+                            text:"0.68"
+                        OpensecuVE:
+                            text:"0.70"
+                        OpensecuVE:
+                            text:"0.73"
+                        OpensecuVE:
+                            text:"0.75"
+                        OpensecuVE:
+                            text:"0.76"
+                        OpensecuVE:
+                            text:"0.78"
+                        OpensecuVE:
+                            text:"0.78"
+                        OpensecuVE:
+                            text:"0.78"
+
+
+                        OpensecuVE:
+                            text:"550"
+                        OpensecuVE:
+                            text:"0.63"
+                        OpensecuVE:
+                            text:"0.65"
+                        OpensecuVE:
+                            text:"0.67"
+                        OpensecuVE:
+                            text:"0.69"
+                        OpensecuVE:
+                            text:"0.71"
+                        OpensecuVE:
+                            text:"0.72"
+                        OpensecuVE:
+                            text:"0.75"
+                        OpensecuVE:
+                            text:"0.76"
+                        OpensecuVE:
+                            text:"0.79"
+                        OpensecuVE:
+                            text:"0.82"
+                        OpensecuVE:
+                            text:"0.82"
+                        OpensecuVE:
+                            text:"0.82"
+
+
+                        OpensecuVE:
+                            text:"600"
+                        OpensecuVE:
+                            text:"0.64"
+                        OpensecuVE:
+                            text:"0.67"
+                        OpensecuVE:
+                            text:"0.68"
+                        OpensecuVE:
+                            text:"0.70"
+                        OpensecuVE:
+                            text:"0.73"
+                        OpensecuVE:
+                            text:"0.75"
+                        OpensecuVE:
+                            text:"0.76"
+                        OpensecuVE:
+                            text:"0.79"
+                        OpensecuVE:
+                            text:"0.83"
+                        OpensecuVE:
+                            text:"0.85"
+                        OpensecuVE:
+                            text:"0.86"
+                        OpensecuVE:
+                            text:"0.86"
+
+
+                        OpensecuVE:
+                            text:"650"
+                        OpensecuVE:
+                            text:"0.66"
+                        OpensecuVE:
+                            text:"0.68"
+                        OpensecuVE:
+                            text:"0.70"
+                        OpensecuVE:
+                            text:"0.71"
+                        OpensecuVE:
+                            text:"0.74"
+                        OpensecuVE:
+                            text:"0.77"
+                        OpensecuVE:
+                            text:"0.78"
+                        OpensecuVE:
+                            text:"0.82"
+                        OpensecuVE:
+                            text:"0.86"
+                        OpensecuVE:
+                            text:"0.89"
+                        OpensecuVE:
+                            text:"0.89"
+                        OpensecuVE:
+                            text:"0.89"
+
+
+                        OpensecuVE:
+                            text:"700"
+                        OpensecuVE:
+                            text:"0.68"
+                        OpensecuVE:
+                            text:"0.69"
+                        OpensecuVE:
+                            text:"0.70"
+                        OpensecuVE:
+                            text:"0.72"
+                        OpensecuVE:
+                            text:"0.75"
+                        OpensecuVE:
+                            text:"0.78"
+                        OpensecuVE:
+                            text:"0.81"
+                        OpensecuVE:
+                            text:"0.85"
+                        OpensecuVE:
+                            text:"0.89"
+                        OpensecuVE:
+                            text:"0.91"
+                        OpensecuVE:
+                            text:"0.91"
+                        OpensecuVE:
+                            text:"0.91"
+
+
+                        OpensecuVE:
+                            text:"750"
+                        OpensecuVE:
+                            text:"0.68"
+                        OpensecuVE:
+                            text:"0.69"
+                        OpensecuVE:
+                            text:"0.70"
+                        OpensecuVE:
+                            text:"0.72"
+                        OpensecuVE:
+                            text:"0.74"
+                        OpensecuVE:
+                            id:aa
+                            text:"0.77"
+                        OpensecuVE:
+                            text:"0.80"
+                        OpensecuVE:
+                            text:"0.83"
+                        OpensecuVE:
+                            text:"0.87"
+                        OpensecuVE:
+                            text:"0.89"
+                        OpensecuVE:
+                            text:"0.89"
+                        OpensecuVE:
+                            text:"0.89"
+
+
+                        OpensecuVE:
+                            text:"800"
+                        OpensecuVE:
+                            text:"0.68"
+                        OpensecuVE:
+                            text:"0.68"
+                        OpensecuVE:
+                            text:"0.68"
+                        OpensecuVE:
+                            text:"0.69"
+                        OpensecuVE:
+                            text:"0.72"
+                        OpensecuVE:
+                            text:"0.75"
+                        OpensecuVE:
+                            text:"0.77"
+                        OpensecuVE:
+                            text:"0.82"
+                        OpensecuVE:
+                            text:"0.84"
+                        OpensecuVE:
+                            text:"0.87"
+                        OpensecuVE:
+                            text:"0.87"
+                        OpensecuVE:
+                            text:"0.87"
+
+
+                        OpensecuVE:
+                            text:"850"
+                        OpensecuVE:
+                            text:"0.65"
+                        OpensecuVE:
+                            text:"0.66"
+                        OpensecuVE:
+                            text:"0.67"
+                        OpensecuVE:
+                            text:"0.68"
+                        OpensecuVE:
+                            text:"0.70"
+                        OpensecuVE:
+                            text:"0.73"
+                        OpensecuVE:
+                            text:"0.76"
+                        OpensecuVE:
+                            text:"0.81"
+                        OpensecuVE:
+                            text:"0.84"
+                        OpensecuVE:
+                            text:"0.87"
+                        OpensecuVE:
+                            text:"0.87"
+                        OpensecuVE:
+                            text:"0.87"
+
+
+                        OpensecuVE:
+                            text:"900"
+                        OpensecuVE:
+                            text:"0.63"
+                        OpensecuVE:
+                            text:"0.64"
+                        OpensecuVE:
+                            text:"0.66"
+                        OpensecuVE:
+                            text:"0.67"
+                        OpensecuVE:
+                            text:"0.69"
+                        OpensecuVE:
+                            text:"0.72"
+                        OpensecuVE:
+                            text:"0.75"
+                        OpensecuVE:
+                            text:"0.80"
+                        OpensecuVE:
+                            text:"0.82"
+                        OpensecuVE:
+                            text:"0.86"
+                        OpensecuVE:
+                            text:"0.86"
+                        OpensecuVE:
+                            text:"0.86"
+
+
+                        OpensecuVE:
+                            text:"970"
+                        OpensecuVE:
+                            text:"0.62"
+                        OpensecuVE:
+                            text:"0.62"
+                        OpensecuVE:
+                            text:"0.64"
+                        OpensecuVE:
+                            text:"0.65"
+                        OpensecuVE:
+                            text:"0.66"
+                        OpensecuVE:
+                            text:"0.71"
+                        OpensecuVE:
+                            text:"0.72"
+                        OpensecuVE:
+                            text:"0.76"
+                        OpensecuVE:
+                            text:"0.80"
+                        OpensecuVE:
+                            text:"0.84"
+                        OpensecuVE:
+                            text:"0.86"
+                        OpensecuVE:
+                            text:"0.86"
+
+
+                        OpensecuVE:
+                            text:"1050"
+                        OpensecuVE:
+                            text:"0.61"
+                        OpensecuVE:
+                            text:"0.61"
+                        OpensecuVE:
+                            text:"0.62"
+                        OpensecuVE:
+                            text:"0.63"
+                        OpensecuVE:
+                            text:"0.65"
+                        OpensecuVE:
+                            text:"0.69"
+                        OpensecuVE:
+                            text:"0.71"
+                        OpensecuVE:
+                            text:"0.75"
+                        OpensecuVE:
+                            text:"0.78"
+                        OpensecuVE:
+                            text:"0.83"
+                        OpensecuVE:
+                            text:"0.83"
+                        OpensecuVE:
+                            text:"0.83"
+
+
+
 
 
 

@@ -15,12 +15,16 @@ from kivy.clock import Clock
 
 from math import cos, sin, pi
 from functools import partial
+import datetime
+import time
 
 
 from devconnect import *
 
 
 import random
+
+
 
 
 def rpm_conversion(rpm):
@@ -47,6 +51,8 @@ def stp():
 class OpensecuReadings(Label):
     pass
 
+class OpensecuVE(Label):
+    pass
 
 
 class OpensecuGauge(AnchorLayout):
@@ -69,13 +75,19 @@ class OpensecuNeedle(Image):
 
 class OpensecuWindow(GridLayout):
 
+
     gauge = ObjectProperty(None)
     needle = ObjectProperty(None)
+    ve = ObjectProperty(None)
+
+    aa = ObjectProperty(None)
 
     imp = StringProperty("0")
     amass =StringProperty("0")
     fmass = StringProperty("0")
     freq = StringProperty("0")
+
+    save_flag = NumericProperty(0)
 
 
     def start(self):
@@ -94,20 +106,37 @@ class OpensecuWindow(GridLayout):
         self.amass = str(readings[3])
         self.fmass = str(readings[4])
         self.freq = str(readings[5])
+        if(self.save_flag):
+            f = open('data/readings.txt', 'a')
+            f.write(datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d %H:%M:%S') + ",")
+            f.write(str(readings[1]) + "," + str(readings[3]) + "," + str(readings[4]) + "," + str(readings[5])+"\n")
+            print("Data saved")
+            f.close()
+
+
 
 
     def on_enter(self, value):
         print(value[5:] )
         self.display.text = "ecu> "
-        rand = random.randint(0,8000)
+        # rand = random.randint(0,8000)
         # print(self.gauge.level)
         if(value[5:] == "r"):
-            self.set_readings()
+            self.aa.color= 0,0.93,1,0.5
         elif(value[5:]=="connect"):
             cnnct()
             self.start()
         elif(value[5:]=="exit"):
             stp()
+        elif(value[5:]=="save"):
+            self.display.text += "\nFile succesfully opened, saving readigns"
+            self.save_flag = 1
+        elif(value[5:]=="save stop"):
+            self.display.text += "\nData capturing stopped"
+            self.save_flag = 0
+        elif(value[5:]=="help"):
+            self.display.text += "\nPress enter to clear the console"
+            self.display.text += "\nAvailable commands: help, connect, save, exit,"
         else:
             pass
 
